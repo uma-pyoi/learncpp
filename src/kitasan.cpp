@@ -1,36 +1,38 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <map>
 class Solution
 {
 public:
-    bool isPalindrome(int x)
+    int romanToInt(std::string s)
     {
-        std::vector<bool> isPalindromeVector;
+        std::map<char, int> romanNums = {{'I', 1}, {'V', 5}, {'X', 10}, {'L', 50}, {'C', 100}, {'D', 500}, {'M', 1000}};
 
-        std::string stringX = std::to_string(x);
-        std::cout << "stringX: " << stringX << '\n';
-
-        int leftCharIndex = 0;
-        int middleIndex = stringX.length() / 2;
-        while (leftCharIndex < middleIndex)
+        int resultInt{};
+        for (size_t i = 0; i < s.length(); i++)
         {
-            char leftChar = stringX.at(leftCharIndex);
-            int rightCharIndex = stringX.length() - leftCharIndex - 1;
-            char rightChar = stringX.at(rightCharIndex);
-            std::cout << "left: " << leftChar << " | right: " << rightChar;
-
-            bool areDifferent = leftChar != rightChar;
-            std::cout << " | different?: " << areDifferent << '\n';
-
-            if (areDifferent)
+            bool isIbeforeVX = (s.at(i) == 'I') && (s.at(i + 1) == 'V' || s.at(i + 1) == 'X');
+            bool isXbeforeLC = (s.at(i) == 'X') && (s.at(i + 1) == 'L' || s.at(i + 1) == 'C');
+            bool isCbeforeDM = (s.at(i) == 'C') && (s.at(i + 1) == 'd' || s.at(i + 1) == 'M');
+            if (isIbeforeVX || isXbeforeLC || isCbeforeDM)
             {
-                return false;
+                resultInt = romanNums[s.at(i + 1)] - romanNums[s.at(i)];
+                if (i == (s.length() - 1))
+                {
+                    break;
+                }
+                else
+                {
+                    i++;
+                }
             }
-            leftCharIndex++;
+            else
+            {
+                resultInt += romanNums[s.at(i)];
+            }
         }
-
-        return true;
+        return resultInt;
     }
 };
 
@@ -38,9 +40,11 @@ int main()
 {
     std::cout << std::boolalpha;
     Solution s;
-    int testInt = -121;
-    bool isP = s.isPalindrome(testInt);
-    std::cout << "is palindrome: " << isP << '\n';
+
+    std::string romanString = "LVIII";
+    int result = s.romanToInt(romanString);
+
+    std::cout << "result: " << result << '\n';
 
     return 0;
 }
