@@ -19,7 +19,8 @@
                 "-Wsign-conversion",
                 "${fileDirname}/**.cpp",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "${fileDirname}/${fileBasenameNoExtension}",
+                "-I../src/include",
             ],
             "options": {
                 "cwd": "${fileDirname}"
